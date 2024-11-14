@@ -1,5 +1,6 @@
 package com.project.t1_openSchool.services;
 
+import com.project.t1_openSchool.aspect.LogBefore;
 import com.project.t1_openSchool.model.Task;
 import com.project.t1_openSchool.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,18 +17,24 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
+    @LogBefore
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
+    @LogBefore
     public Task getTaskById(Long id) {
-        return taskRepository.findById(id).orElse(null);
+        return taskRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Task with id " + id + " not found.")
+        );
     }
 
+    @LogBefore
     public Task saveTask(Task task) {
         return taskRepository.save(task);
     }
 
+    @LogBefore
     public Task updateTask(Long id, Task task) {
         Optional<Task> taskOptional = taskRepository.findById(id);
 
@@ -38,10 +45,14 @@ public class TaskService {
             updatedTask.setUserId(task.getUserId());
             return taskRepository.save(updatedTask);
         }
-        return null;
+        throw new RuntimeException("Task with id " + id + " not found.");
     }
 
+    @LogBefore
     public void deleteTaskById(Long id) {
-        taskRepository.deleteById(id);
+        if (taskRepository.existsById(id)) {
+            taskRepository.deleteById(id);
+        }
+        throw new RuntimeException("Task with id " + id + " not found.");
     }
 }
