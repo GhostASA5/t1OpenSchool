@@ -1,5 +1,6 @@
 package com.project.t1_openSchool.services;
 
+import com.project.t1_openSchool.aspect.LogResult;
 import com.project.t1_openSchool.aspect.LogThrowing;
 import com.project.t1_openSchool.aspect.LogBefore;
 import com.project.t1_openSchool.model.Task;
@@ -19,12 +20,14 @@ public class TaskService {
     private final TaskRepository taskRepository;
 
     @LogBefore
+    @LogResult
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
     @LogBefore
     @LogThrowing
+    @LogResult
     public Task getTaskById(Long id) {
         return taskRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Task with id " + id + " not found.")
@@ -38,6 +41,7 @@ public class TaskService {
 
     @LogBefore
     @LogThrowing
+    @LogResult
     public Task updateTask(Long id, Task task) {
         Optional<Task> taskOptional = taskRepository.findById(id);
 
