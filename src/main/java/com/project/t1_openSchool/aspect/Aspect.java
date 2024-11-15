@@ -2,15 +2,16 @@ package com.project.t1_openSchool.aspect;
 
 import com.project.t1_openSchool.model.Task;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.List;
 
 @org.aspectj.lang.annotation.Aspect
 @Component
@@ -38,19 +39,37 @@ public class Aspect {
 
     @AfterReturning(value = "@annotation(LogResult)", returning = "taskResult")
     public void logAfterReturningTask(JoinPoint joinPoint, Task taskResult) {
-        logAfterReturning(joinPoint, taskResult);
-    }
-
-    @AfterReturning(value = "@annotation(LogResult)", returning = "taskList")
-    public void logAfterReturningTasksList(JoinPoint joinPoint, List<Task> taskList) {
-        logAfterReturning(joinPoint, taskList);
-    }
-
-    private void logAfterReturning(JoinPoint joinPoint, Object result) {
         logger.info("Call from class {} method {}",
                 joinPoint.getSignature().getDeclaringTypeName(),
                 joinPoint.getSignature().getName()
         );
+        logger.info("Method result: {}", taskResult);
+    }
+
+    @Around("@annotation(LogSpendTime)")
+    public Object around(ProceedingJoinPoint joinPoint) {
+        logger.info("Calling from class {} method {}",
+                joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName()
+        );
+
+        Object[] args = joinPoint.getArgs();
+        logger.info("Method args: {}", Arrays.toString(args));
+
+        Object result;
+        long startTime = System.currentTimeMillis();
+
+        try {
+            result = joinPoint.proceed();
+        } catch (Throwable throwable) {
+            logger.error("Exception in method: {}", throwable.getMessage());
+            throw new RuntimeException("Exception in method: " + throwable.getMessage(), throwable);
+        }
+
+        long endTime = System.currentTimeMillis();
         logger.info("Method result: {}", result);
+        logger.info("Method execution time: {} ms", endTime - startTime);
+
+        return result;
     }
 }
