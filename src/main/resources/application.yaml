@@ -10,9 +10,42 @@ spring:
     username: postgres
     password: postgres
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: artemsvist1809@gmail.com
+    password: "******"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+
 server:
   port: 8088
 
 springdoc:
   api-docs:
     path: /api-docs
+
+app:
+  kafka:
+    bootstrap:
+      server: localhost:9092
+    consumer:
+      group-id: task-group
+      session-timeout: 15000
+      max-partition-fetch-bytes: 300000
+      max-poll-records: 10
+      max-poll-interval-ms: 3000
+    producer:
+      enable: true
+    topic:
+      task-status: task-status
+    listener:
+      poll-timeout: 1000

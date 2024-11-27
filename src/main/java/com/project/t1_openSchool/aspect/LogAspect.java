@@ -3,21 +3,18 @@ package com.project.t1_openSchool.aspect;
 import com.project.t1_openSchool.model.Task;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
-@org.aspectj.lang.annotation.Aspect
+@Aspect
 @Component
-public class Aspect {
+public class LogAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(Aspect.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(LogAspect.class.getName());
 
     @Before("@annotation(LogBefore)")
     public void logBefore(JoinPoint joinPoint) {
