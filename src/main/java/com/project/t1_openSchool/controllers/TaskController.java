@@ -1,11 +1,11 @@
 package com.project.t1_openSchool.controllers;
 
-import com.project.t1_openSchool.model.Task;
+import com.project.t1_openSchool.dto.TaskDto;
+import com.project.t1_openSchool.dto.TaskDtoList;
 import com.project.t1_openSchool.services.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -15,27 +15,27 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public List<Task> getAllTasks() {
+    public TaskDtoList getAllTasks() {
         return taskService.getAllTasks();
     }
 
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
+    public TaskDto getTaskById(@PathVariable(name = "id") Long id) {
         return taskService.getTaskById(id);
     }
 
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
+    public TaskDto createTask(@RequestBody TaskDto task) {
         return taskService.saveTask(task);
     }
 
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
+    public TaskDto updateTask(@PathVariable(name = "id") Long id, @RequestBody TaskDto task) {
         return taskService.updateTask(id, task);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
+    public void deleteTask(@PathVariable(name = "id") Long id) {
         taskService.deleteTaskById(id);
     }
 }

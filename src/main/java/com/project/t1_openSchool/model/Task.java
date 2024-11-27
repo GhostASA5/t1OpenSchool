@@ -25,6 +25,10 @@ public class Task {
     @Column
     private String description;
 
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
+
     @Column(name = "user_id")
     private Long userId;
 
