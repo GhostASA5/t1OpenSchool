@@ -24,7 +24,14 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
+    protocol: smtp
 
+log:
+  annotation:
+    enable: true
+  controller:
+    enable: true
+    logLevel: "INFO"
 
 server:
   port: 8088

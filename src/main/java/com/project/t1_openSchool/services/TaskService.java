@@ -1,22 +1,19 @@
 package com.project.t1_openSchool.services;
 
-import com.project.t1_openSchool.aspect.LogResult;
-import com.project.t1_openSchool.aspect.LogSpendTime;
-import com.project.t1_openSchool.aspect.LogThrowing;
-import com.project.t1_openSchool.aspect.LogBefore;
 import com.project.t1_openSchool.dto.TaskDto;
 import com.project.t1_openSchool.dto.TaskDtoList;
 import com.project.t1_openSchool.kafka.KafkaTaskProducer;
 import com.project.t1_openSchool.mapper.TaskMapper;
+import com.project.t1_openSchool.model.Status;
 import com.project.t1_openSchool.model.Task;
 import com.project.t1_openSchool.repository.TaskRepository;
 import com.project.t1_openSchool.utils.BeanUtils;
+import com.spring.project.aspect.annotation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +34,6 @@ public class TaskService {
         return taskMapper.taskListToTaskDtoList(taskRepository.findAll());
     }
 
-    @LogBefore
     @LogThrowing
     @LogResult
     public TaskDto getTaskById(Long id) {
@@ -55,18 +51,18 @@ public class TaskService {
 
     @LogSpendTime
     public TaskDto updateTask(Long id, TaskDto taskDto) {
-        Optional<Task> taskOptional = taskRepository.findById(id);
-        Task task = taskMapper.taskDtoToTask(taskDto);
+        Task existedTask = taskRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Task with id " + id + " not found."));
+        Task newTask = taskMapper.taskDtoToTask(taskDto);
+        Status oldStatus = existedTask.getStatus();
 
-        if (taskOptional.isPresent()) {
-            Task updatedTask = taskOptional.get();
-            if (!updatedTask.getStatus().equals(task.getStatus())) {
-                kafkaTaskProducer.send(taskTopic, updatedTask.getId(), task.getStatus());
-            }
-            BeanUtils.copyNonNullProperties(task, updatedTask);
-            return taskMapper.taskToTaskDto(taskRepository.save(updatedTask));
+        BeanUtils.copyNonNullProperties(newTask, existedTask);
+        taskRepository.save(existedTask);
+        if (!oldStatus.equals(taskDto.getStatus())) {
+            kafkaTaskProducer.send(taskTopic, existedTask.getId(), newTask.getStatus());
         }
-        throw new RuntimeException("Task with id " + id + " not found.");
+        return taskMapper.taskToTaskDto(existedTask);
+
     }
 
     @LogThrowing
