@@ -14,7 +14,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: artemsvist1809@gmail.com
-    password: "mofd pyxb fpdy gars"
+    password: "******"
     properties:
       mail:
         smtp:
@@ -25,7 +25,13 @@ spring:
           timeout: 5000
           writetimeout: 5000
     protocol: smtp
-    debug: true
+
+log:
+  annotation:
+    enable: true
+  controller:
+    enable: true
+    logLevel: "INFO"
 
 server:
   port: 8088

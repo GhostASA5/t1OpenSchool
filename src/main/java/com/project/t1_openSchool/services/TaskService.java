@@ -1,9 +1,5 @@
 package com.project.t1_openSchool.services;
 
-import com.project.t1_openSchool.aspect.LogResult;
-import com.project.t1_openSchool.aspect.LogSpendTime;
-import com.project.t1_openSchool.aspect.LogThrowing;
-import com.project.t1_openSchool.aspect.LogBefore;
 import com.project.t1_openSchool.dto.TaskDto;
 import com.project.t1_openSchool.dto.TaskDtoList;
 import com.project.t1_openSchool.kafka.KafkaTaskProducer;
@@ -12,6 +8,7 @@ import com.project.t1_openSchool.model.Status;
 import com.project.t1_openSchool.model.Task;
 import com.project.t1_openSchool.repository.TaskRepository;
 import com.project.t1_openSchool.utils.BeanUtils;
+import com.spring.project.aspect.annotation.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +34,6 @@ public class TaskService {
         return taskMapper.taskListToTaskDtoList(taskRepository.findAll());
     }
 
-    @LogBefore
     @LogThrowing
     @LogResult
     public TaskDto getTaskById(Long id) {
