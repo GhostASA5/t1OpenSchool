@@ -1,4 +1,4 @@
-package com.project.t1_openSchool.model;
+package com.project.t1_openSchool.model.task;
 
 import jakarta.persistence.*;
 import lombok.*;

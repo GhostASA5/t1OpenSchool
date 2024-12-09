@@ -2,7 +2,7 @@ package com.project.t1_openSchool.mapper;
 
 import com.project.t1_openSchool.dto.TaskDto;
 import com.project.t1_openSchool.dto.TaskDtoList;
-import com.project.t1_openSchool.model.Task;
+import com.project.t1_openSchool.model.task.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

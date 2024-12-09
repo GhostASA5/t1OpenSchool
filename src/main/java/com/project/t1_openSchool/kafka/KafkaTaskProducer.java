@@ -1,7 +1,7 @@
 package com.project.t1_openSchool.kafka;
 
 import com.project.t1_openSchool.dto.UpdateTaskStatusEvent;
-import com.project.t1_openSchool.model.Status;
+import com.project.t1_openSchool.model.task.Status;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
