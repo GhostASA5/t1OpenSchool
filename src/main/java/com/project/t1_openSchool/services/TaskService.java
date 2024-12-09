@@ -4,8 +4,8 @@ import com.project.t1_openSchool.dto.TaskDto;
 import com.project.t1_openSchool.dto.TaskDtoList;
 import com.project.t1_openSchool.kafka.KafkaTaskProducer;
 import com.project.t1_openSchool.mapper.TaskMapper;
-import com.project.t1_openSchool.model.Status;
-import com.project.t1_openSchool.model.Task;
+import com.project.t1_openSchool.model.task.Status;
+import com.project.t1_openSchool.model.task.Task;
 import com.project.t1_openSchool.repository.TaskRepository;
 import com.project.t1_openSchool.utils.BeanUtils;
 import com.spring.project.aspect.annotation.*;
@@ -69,6 +69,7 @@ public class TaskService {
     public void deleteTaskById(Long id) {
         if (taskRepository.existsById(id)) {
             taskRepository.deleteById(id);
+            return;
         }
         throw new RuntimeException("Task with id " + id + " not found.");
     }

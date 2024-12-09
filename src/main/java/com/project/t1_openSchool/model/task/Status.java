@@ -1,4 +1,4 @@
-package com.project.t1_openSchool.model;
+package com.project.t1_openSchool.model.task;
 
 public enum Status {
 

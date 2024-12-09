@@ -1,6 +1,6 @@
 package com.project.t1_openSchool.dto;
 
-import com.project.t1_openSchool.model.Status;
+import com.project.t1_openSchool.model.task.Status;
 import lombok.Builder;
 import lombok.Data;
 
