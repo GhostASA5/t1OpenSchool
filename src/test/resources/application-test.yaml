@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: t1-homework
+
+  jpa:
+    generate-ddl: true
+    open-in-view: true
+  datasource:
+    url: jdbc:postgresql://localhost:5435/task_db
+    username: postgres
+    password: postgres
